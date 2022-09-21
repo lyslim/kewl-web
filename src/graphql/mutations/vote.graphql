@@ -1,0 +1,7 @@
+mutation Vote($value: Int!, $postUuid: String!) {
+	vote(value: $value, postUuid: $postUuid) {
+		uuid
+		points
+		voteStatus
+	}
+}
