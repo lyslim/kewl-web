@@ -15,17 +15,17 @@ import { toErrorRecord } from '../../utils/toErrorMap';
 
 export const ChangePassword: NextPage<{ token: string }> = () => {
 	const router = useRouter();
-	const [, changePassword] = useChangePasswordMutation();
+	const [changePassword] = useChangePasswordMutation();
 	const [tokenError, setTokenError] = useState('');
 	return (
 		<Wrapper variant="small">
 			<Formik
 				initialValues={{ newPassword: '' }}
 				onSubmit={async ({ newPassword }, { setErrors }) => {
-					const response = await changePassword({
+					const response = await changePassword({variables: {
 						newPassword,
 						token: router.query.token === 'string' ? router.query.token : '',
-					});
+					}});
 					if (response.data?.changePassword.errors) {
 						const errorRecords = toErrorRecord(response.data.changePassword.errors);
 
@@ -62,4 +62,4 @@ export const ChangePassword: NextPage<{ token: string }> = () => {
 	);
 };
 
-export default withUrqlClient(createUrqlClient)(ChangePassword);
+export default ChangePassword;

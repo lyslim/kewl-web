@@ -1,18 +1,27 @@
-import { ChakraProvider, ColorModeProvider } from '@chakra-ui/react';
-import React from 'react';
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { ChakraProvider } from '@chakra-ui/react';
 import theme from '../theme';
+
+const client = new ApolloClient({
+	uri: process.env.NEXT_PUBLIC_API_URL as string,
+	credentials: 'include',
+	cache: new InMemoryCache(),
+  });
 
 function MyApp({ Component, pageProps }: any) {
 	return (
-		<ChakraProvider resetCSS theme={theme}>
+		<ApolloProvider client={client}>
+			<ChakraProvider resetCSS theme={theme}>
 			{/* <ColorModeProvider
-				options={{
+				options={{ 
 					useSystemColorMode: true,
 				}}
 			> */}
 			<Component {...pageProps} />
 			{/* </ColorModeProvider> */}
-		</ChakraProvider>
+			</ChakraProvider>
+		</ApolloProvider>
+		
 	);
 }
 

@@ -14,14 +14,14 @@ export const EditPost = ({}) => {
 
 	const id = router.query.id ? (router.query.id as string) : 'INVALID';
 
-	const [{ data, fetching }] = usePostQuery({
-		pause: id === 'INVALID',
+	const { data, loading } = usePostQuery({
+		skip: id === 'INVALID',
 		variables: { id },
 	});
 
-	const [, updatePost] = useUpdatePostMutation();
+	const [updatePost] = useUpdatePostMutation();
 
-	if (fetching) {
+	if (loading) {
 		return (
 			<Layout>
 				<div>loading...</div>
@@ -37,8 +37,8 @@ export const EditPost = ({}) => {
 					console.log(values);
 
 					if (id) {
-						const { error } = await updatePost({ id, ...values });
-						if (!error) {
+						const { errors } = await updatePost( {variables: { id, ...values }});
+						if (!errors) {
 							router.back();
 						}
 					}
@@ -60,4 +60,4 @@ export const EditPost = ({}) => {
 	);
 };
 
-export default withUrqlClient(createUrqlClient)(EditPost);
+export default EditPost;

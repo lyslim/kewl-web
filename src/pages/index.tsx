@@ -14,15 +14,15 @@ import { createUrqlClient } from '../utils/createUrqlClient';
 const Index = () => {
 	const [variables, setVariables] = useState({ limit: 20, cursor: null as null | string });
 
-	const [{ data, error, fetching }] = usePostsQuery({
+	const { data, error, loading } = usePostsQuery({
 		variables,
 	});
 
 	const [, deletePost] = useDeletePostMutation();
 
-	const [{ data: meData }] = useMeQuery();
+	const { data: meData } = useMeQuery();
 
-	if (!fetching && !data) {
+	if (!loading && !data) {
 		return (
 			<div>
 				<div> you got query failed for some reason</div>
@@ -33,7 +33,7 @@ const Index = () => {
 
 	return (
 		<Layout>
-			{!data && fetching ? (
+			{!data && loading ? (
 				<div>loading...</div>
 			) : (
 				<Stack spacing={8}>
@@ -63,7 +63,7 @@ const Index = () => {
 			{data?.posts?.hasMore ? (
 				<Flex>
 					<Button
-						isLoading={fetching}
+						isLoading={loading}
 						m="auto"
 						mt={8}
 						onClick={() => {
@@ -81,4 +81,4 @@ const Index = () => {
 	);
 };
 
-export default withUrqlClient(createUrqlClient, { ssr: true })(Index);
+export default Index;

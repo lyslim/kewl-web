@@ -13,14 +13,14 @@ const Post = ({}) => {
 
 	const postId = typeof router.query.id === 'string' ? router.query.id : 'INVALID';
 
-	const [{ data, error, fetching }] = usePostQuery({
-		pause: postId === 'INVALID',
+	const { data, error, loading } = usePostQuery({
+		skip: postId === 'INVALID',
 		variables: {
 			id: postId,
 		},
 	});
 
-	if (fetching) {
+	if (loading) {
 		return (
 			<Layout>
 				<div>loading...</div>
@@ -50,4 +50,4 @@ const Post = ({}) => {
 	);
 };
 
-export default withUrqlClient(createUrqlClient, { ssr: true })(Post);
+export default Post;
